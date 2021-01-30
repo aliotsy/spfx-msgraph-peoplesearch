@@ -10,9 +10,10 @@ import { IPeopleSearchContainerState } from "./IPeopleSearchContainerState";
 import {
   Spinner,
   SpinnerSize,
+  Stack,
   MessageBar,
   MessageBarType,
-  IconButton,
+  ActionButton,
   Overlay,
   ITheme
 } from "office-ui-fabric-react";
@@ -152,18 +153,42 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
         let nextPageEl: JSX.Element = null;
 
         if (this.hasPreviousPage()) {
-          prevPageEl = <IconButton onClick={async () => await this._fetchPeopleSearchResults(this.state.page - 1)} iconProps={{ iconName: 'DoubleChevronLeft8' }} />;
+          prevPageEl = 
+            <ActionButton
+              onClick={async () => await this._fetchPeopleSearchResults(this.state.page - 1)}
+              iconProps={{ iconName: 'DoubleChevronLeft8' }}
+            >
+              Previous
+            </ActionButton>;
         }
 
         if (this.hasNextPage()) {
-          nextPageEl = <IconButton onClick={async () => await this._fetchPeopleSearchResults(this.state.page + 1)} iconProps={{ iconName: 'DoubleChevronRight8' }} />;
+          nextPageEl = 
+            <ActionButton
+              onClick={async () => await this._fetchPeopleSearchResults(this.state.page + 1)}
+              styles={{flexContainer: {
+                flexDirection: 'row-reverse'
+              }}}
+              iconProps={{ iconName: 'DoubleChevronRight8' }}
+            >
+              Next
+            </ActionButton>;
         }
 
         renderPagination =
-          <div className={styles.searchPagination}>
+          <Stack
+            horizontal
+            verticalAlign="center"
+            className={styles.searchPagination}
+            horizontalAlign="space-between"
+          >
+            <div style={{"textAlign": "left"}}>
               {prevPageEl}
+            </div>
+            <div style={{"textAlign": "right"}}>
               {nextPageEl}
-          </div>;
+            </div>
+          </Stack>;
       }
 
       renderWebPartContent =
